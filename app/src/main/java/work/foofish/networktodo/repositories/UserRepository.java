@@ -14,7 +14,7 @@ import work.foofish.networktodo.network.TokenStore;
 import work.foofish.networktodo.network.UserService;
 
 public class UserRepository {
-    private UserService userService;
+    private final UserService userService;
 
     public UserRepository() {
         userService = RetrofitProvider.getUserService();
@@ -23,13 +23,14 @@ public class UserRepository {
     public LiveData<AuthResponse> login(String username, String password) {
         final MutableLiveData<AuthResponse> loginResponseData = new MutableLiveData<>();
         AuthRequest loginRequest = new AuthRequest(username, password);
-        userService.login(loginRequest).enqueue(new Callback<BaseResponse<AuthResponse>>() {
+        userService.login(loginRequest).enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<BaseResponse<AuthResponse>> call, Response<BaseResponse<AuthResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     AuthResponse data = response.body().getData();
                     if (data != null && data.getToken() != null) {
                        TokenStore.setToken(data.getToken());
+                       TokenStore.setUserId(data.getId());
                     }
                     loginResponseData.setValue(data);
                 } else {
@@ -48,7 +49,7 @@ public class UserRepository {
     public LiveData<AuthResponse> register(String username, String password) {
         final MutableLiveData<AuthResponse> registerResponseData = new MutableLiveData<>();
         AuthRequest registerRequest = new AuthRequest(username, password);
-        userService.register(registerRequest).enqueue(new Callback<BaseResponse<AuthResponse>>() {
+        userService.register(registerRequest).enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<BaseResponse<AuthResponse>> call, Response<BaseResponse<AuthResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {

@@ -66,6 +66,17 @@ public class LoginActivity extends AppCompatActivity {
             String password = binding.etLoginPassword.getText().toString();
             viewModel.login(username, password);
         });
+
+        binding.btnRegister.setOnClickListener(v -> {
+            String username = binding.etRegUsername.getText().toString();
+            String password = binding.etRegPassword.getText().toString();
+            String confirmPassword = binding.etRegConfirmPassword.getText().toString();
+            if (!password.equals(confirmPassword)) {
+                Toast.makeText(this, "Passwords do not match.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            viewModel.register(username, password);
+        });
     }
 
     private void navigateToMain() {
@@ -93,10 +104,17 @@ public class LoginActivity extends AppCompatActivity {
 
         viewModel.loginResult.observe(this, loginResponse -> {
             if (loginResponse != null) {
-                // 1. 保存 Token
-                TokenStore.setToken(loginResponse.getToken());
                 // 2. 提示成功
                 Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                // 3. 跳转到主页
+                navigateToMain();
+            }
+        });
+
+        viewModel.registerResult.observe(this, loginResponse -> {
+            if (loginResponse != null) {
+                // 2. 提示成功
+                Toast.makeText(this, "Register Successful!", Toast.LENGTH_SHORT).show();
                 // 3. 跳转到主页
                 navigateToMain();
             }
