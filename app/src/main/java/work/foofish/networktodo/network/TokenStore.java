@@ -1,6 +1,7 @@
 package work.foofish.networktodo.network;
 
 public final class TokenStore {
+    private static volatile String userId;
     private static volatile String token;
 
     private TokenStore() {}
@@ -13,8 +14,17 @@ public final class TokenStore {
         return token;
     }
 
+    public static String getUserId() {
+        return userId;
+    }
+
+    public static void setUserId(String userId) {
+        TokenStore.userId = userId;
+    }
+
     public static void clear() {
         token = null;
+        userId = null;
     }
 }
 

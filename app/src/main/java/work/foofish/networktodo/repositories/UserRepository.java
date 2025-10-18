@@ -55,6 +55,7 @@ public class UserRepository {
                     AuthResponse data = response.body().getData();
                     if (data != null && data.getToken() != null) {
                         TokenStore.setToken(data.getToken());
+                        TokenStore.setUserId(data.getId());
                     }
                     registerResponseData.setValue(data);
                 } else {

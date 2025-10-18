@@ -8,7 +8,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import work.foofish.networktodo.databinding.ActivityMainBinding;
+import work.foofish.networktodo.network.TokenStore;
+
 public class MainActivity extends AppCompatActivity {
+
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +25,6 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        binding.textView.setText("User ID is: " + TokenStore.getUserId() + "\nToken is: " + TokenStore.getToken());
     }
 }
